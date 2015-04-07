@@ -9,6 +9,7 @@
 <!--ExtJs框架开始-->
 <script type="text/javascript" src="../../js/extjs/adapter/ext/ext-base.js"></script>
 <script type="text/javascript" src="../../js/extjs/ext-all.js"></script>
+<script type="text/javascript" src="../../js/extjs/ext-lang-zh_CN.js"></script>
 <link rel="stylesheet" type="text/css" href="../../js/extjs/resources/css/ext-all.css" />
 <style type="text/css">
 	.loginicon{
@@ -237,14 +238,14 @@
 			alert(combobox.getValue());
 		});
 		//级联下拉列表
-		/* //创建市数据源
+		//创建市数据源
 		var combocitystore = new Ext.data.Store({
 			//设定读取的地址
-			proxy: new Ext.data.HttpProxy({url: ''}),
-			//设定读取格式
+			proxy: new Ext.data.HttpProxy({url: '../../ComboBoxServlet',method: 'get'}),
+			//读取json返回值根节点为data，对象列为id和name
 			reader: new Ext.data.JsonReader(
-				{root: 'data'},
-				[{name: 'id'},{name: 'name'}]
+				{root: 'data'}, 
+				[{name: 'id'},{name: 'name'}]		
 			)
 		});
 		//创建市Combobox
@@ -256,21 +257,22 @@
 			displayField: 'name',
 			valueField: 'id',
 			triggerAction: 'all',
-			emptyBlank: '请选择...',
+			emptyText: '请选择...',
 			allowBlank: false,
 			blankText: '请选择市',
-			allowBlank: false,
-			mode: 'local',
+			editable: false,
+			mode: 'local', //该属性和以下方法为了兼容ie8
 			listeners: {
-				'render': function(){
-					comboareastore.load();
+				'render': function () {
+				 	combocitystore.load();
 				}
 			}
 		});
 		//创建区数据源
 		var comboareastore = new Ext.data.Store({
 			//设定读取地址
-			proxy: new Ext.data.HttpProxy({url: ''}),
+			proxy: new Ext.data.HttpProxy({url: '../../ComboBoxServlet',method: 'post'}),
+			//读取json返回值根节点为data，对象列为id和name
 			reader: new Ext.data.JsonReader(
 				{root: 'data'}, 
 				[{name: 'id'},{name: 'name'}]		
@@ -290,11 +292,13 @@
 			editable: false
 		});
 		//实现联动
-		comboboxcity.on('select',function(){
-			comboareastore.baseParams.id = comboboxcity.getValue();
-			comboboxcity.setValue('');
-			comboareastore.load();
-		}); */
+		//市选择变化时触发事件
+		comboboxcity.on('select', function () {
+			//comboareastore是区的数据源，当市变化时，给区的数据源加上个向service端发送的参数
+	 		comboareastore.baseParams.id = comboboxcity.getValue();
+	 		comboareacity.setValue('');//把区的下拉列表设置为空，由于非空验证，Ext会提示用户“请选择区”
+	 		comboareastore.load();//区的数据源重新加载
+ 		});
 		
 		/*FormPanel*/
 		//表单
@@ -319,8 +323,8 @@
 		        radiogroup,
 		        checkboxgroup,
 		        combobox,
-		        /* comboboxcity, 
-		        comboareacity */
+		        comboboxcity, 
+		        comboareacity
 			],
 			buttons: [submit,reset]
 		});
@@ -332,7 +336,7 @@
 			iconCls: 'loginicon',//给窗体加上小图标
 			plain: true,
 			width: 326,
-			height: 324,
+			height: 374,
 			//html: '<div>这里是窗口内容</div>',
 			resizable: true,//是否可以调整窗体的大小
 			modal: true,//是否为模态窗体[什么是模态窗体？当你打开这个窗体以后，如果不能对其他的窗体进行操作，那么这个窗体就是模态窗体，否则为非模态窗体]。
