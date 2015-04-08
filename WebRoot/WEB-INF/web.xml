@@ -15,4 +15,14 @@
   	<url-pattern>/ComboBoxServlet</url-pattern>
   </servlet-mapping>
   
+  <servlet>
+  	<servlet-name>FileOperationServlet</servlet-name>
+  	<servlet-class>com.jason.extjs.FileOperationServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>FileOperationServlet</servlet-name>
+  	<url-pattern>/FileOperationServlet</url-pattern>
+  </servlet-mapping>
+  
 </web-app>

@@ -10,7 +10,8 @@
 <script type="text/javascript" src="../../js/extjs/adapter/ext/ext-base.js"></script>
 <script type="text/javascript" src="../../js/extjs/ext-all.js"></script>
 <script type="text/javascript" src="../../js/extjs/ext-lang-zh_CN.js"></script>
-<link rel="stylesheet" type="text/css" href="../../js/extjs/resources/css/ext-all.css" />
+<script type="text/javascript" src="../../js/kindeditor/kindeditor.js"></script>
+<link type="text/css" rel="stylesheet" href="../../js/extjs/resources/css/ext-all.css" />
 <style type="text/css">
 	.loginicon{
 		background-image: url("../../js/extjs/resources/images/login.gif") !important;
@@ -60,42 +61,6 @@
 			id-[element id]错误提示显示在指定id的HTML元件中
 		*/
 		Ext.form.Field.prototype.msgTarget = 'side';
-		
-		/*Button*/
-		//提交按钮处理方法
-		var submitclick = function(){
-			//校验表单的验证项是否全部通过
-			if (form.getForm().isValid()) {
-				Ext.Msg.alert('提示','登陆成功！');
-			} else {
-				Ext.MessageBox.alert('提示','你点击了提交按钮');
-			}	
-		}
-		//重置按钮处理方法
-		var resetclick = function(){
-			//Ext.MessageBox.alert('提示','你点击了重置按钮');
-			//重置表单
-			form.getForm().reset();
-		}
-		//重置按钮“鼠标悬停”处理方法
-		var resetmouseover = function(){
-			//Ext.MessageBox.alert('提示','鼠标悬停在按钮上');
-		}
-		//提交按钮
-		var submit = new Ext.Button({
-			text: '提交',
-			//首发方法处理事件,是特殊的listeners
-			handler: submitclick
-		});
-		//重置按钮
-		var reset = new Ext.Button({
-			text: '重置',
-			//listeners：事件名 + 处理函数的组合，事件监听器
-			listeners: {
-				'mouseover': resetmouseover,
-				'click': resetclick
-			}
-		});
 		
 		/*表单内容*/
 		//用户名input
@@ -185,7 +150,7 @@
 		});
 		//获取单选组的值
 		radiogroup.on('change',function(rdgroup,checked){
-			alert(checked.getRawValue());
+			//alert(checked.getRawValue());
 		});
 		//复选框field
 		var checkboxgroup = new Ext.form.CheckboxGroup({
@@ -209,7 +174,7 @@
 		//获得复选框的值
 		checkboxgroup.on('change',function(cbgroup,checked){
 			for (var i = 0; i < checked.length; i++) {
-				alert(checked[i].getRawValue());
+				//alert(checked[i].getRawValue());
 			}
 		});
 		//下拉列表:创建一个新的数组数据源
@@ -235,7 +200,7 @@
 		});
 		//获取Combobox选中的值
 		combobox.on('select',function(){
-			alert(combobox.getValue());
+			//alert(combobox.getValue());
 		});
 		//级联下拉列表
 		//创建市数据源
@@ -299,20 +264,77 @@
 	 		comboareacity.setValue('');//把区的下拉列表设置为空，由于非空验证，Ext会提示用户“请选择区”
 	 		comboareastore.load();//区的数据源重新加载
  		});
+		//创建文本上传域
+		var exteditor = new Ext.form.HtmlEditor({
+			fieldLabel: '员工描述'
+		});
+		//整合KE编辑器
+		var keeditor = new Ext.form.TextArea({
+			id: 'keeditor',
+			fieldLabel: '员工描述',
+			width: 700,
+			height: 200
+		});
+		
+		/*Button*/
+		//提交按钮处理方法
+		var submitclick = function(){
+			//校验表单的验证项是否全部通过
+			if (form.getForm().isValid()) {
+				//Ext.Msg.alert('提示','登陆成功！');
+				form.getForm().submit({
+					waitTitle: '请稍后',
+					waitMsg: '正在上传',
+					success: function(form,action){
+						Ext.MessageBox.alert('提示','上传成功');
+						//document.getElementById('imageshow').innerHTML = '<img style="width:150px;height:150px" src="' + action.result.path + '"/>';
+					},
+					failure: function(){
+						Ext.MessageBox.alert('提示','上传失败');
+					}
+				});						
+			} else {
+				//Ext.MessageBox.alert('提示','你点击了提交按钮');
+			}	
+		}
+		//重置按钮处理方法
+		var resetclick = function(){
+			//Ext.MessageBox.alert('提示','你点击了重置按钮');
+			//重置表单
+			form.getForm().reset();
+		}
+		//重置按钮“鼠标悬停”处理方法
+		var resetmouseover = function(){
+			//Ext.MessageBox.alert('提示','鼠标悬停在按钮上');
+		}
+		//提交按钮
+		var submit = new Ext.Button({
+			text: '提交',
+			//首发方法处理事件,是特殊的listeners
+			handler: submitclick
+		});
+		//重置按钮
+		var reset = new Ext.Button({
+			text: '重置',
+			//listeners：事件名 + 处理函数的组合，事件监听器
+			listeners: {
+				'mouseover': resetmouseover,
+				'click': resetclick
+			}
+		});
 		
 		/*FormPanel*/
 		//表单
 		var form = new Ext.FormPanel({
-			url: '',
+			url: '../../FileOperationServlet',
 			labelAlign: 'right',
 			labelWidth: 65,
 			frame: true,
-			cls: 'loginfrom',
+			cls: 'multipart/form',
 			buttonAlign: 'center',
 			bodyStyle: 'padding:6px 0px 0xp 15px',
-			//title: '表单标题',
-			//style: 'margin:10px',
-			//html: '<div style="padding:10px">这是表单内容</div>',
+			fileUpload: true,
+			defaultType:'textfield', 
 			items: [
 		        username,
 		        password,
@@ -324,8 +346,19 @@
 		        checkboxgroup,
 		        combobox,
 		        comboboxcity, 
-		        comboareacity
+		        comboareacity,
+		        exteditor, 
+		        keeditor
 			],
+			 listeners: {
+				 'render': function () {
+					 KE.show({
+					 id: 'keeditor',
+					 	imageUploadJson: ''
+					 });
+					 setTimeout("KE.create('keeditor');", 1000);
+				 }
+			},
 			buttons: [submit,reset]
 		});
 		
@@ -336,7 +369,7 @@
 			iconCls: 'loginicon',//给窗体加上小图标
 			plain: true,
 			width: 326,
-			height: 374,
+			height: 574,
 			//html: '<div>这里是窗口内容</div>',
 			resizable: true,//是否可以调整窗体的大小
 			modal: true,//是否为模态窗体[什么是模态窗体？当你打开这个窗体以后，如果不能对其他的窗体进行操作，那么这个窗体就是模态窗体，否则为非模态窗体]。
