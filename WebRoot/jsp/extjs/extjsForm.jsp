@@ -4,13 +4,11 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Ext js test</title>
-</head>
+<title>Extjs form test</title>
 <!--ExtJs框架开始-->
 <script type="text/javascript" src="../../js/extjs/adapter/ext/ext-base.js"></script>
 <script type="text/javascript" src="../../js/extjs/ext-all.js"></script>
 <script type="text/javascript" src="../../js/extjs/ext-lang-zh_CN.js"></script>
-<script type="text/javascript" src="../../js/kindeditor/kindeditor.js"></script>
 <link type="text/css" rel="stylesheet" href="../../js/extjs/resources/css/ext-all.css" />
 <style type="text/css">
 	.loginicon{
@@ -203,6 +201,29 @@
 			//alert(combobox.getValue());
 		});
 		//级联下拉列表
+		//创建区数据源
+		var comboareastore = new Ext.data.Store({
+			//设定读取地址
+			proxy: new Ext.data.HttpProxy({url: '../../ComboBoxServlet',method: 'post'}),
+			//读取json返回值根节点为data，对象列为id和name
+			reader: new Ext.data.JsonReader(
+				{root: 'data'}, 
+				[{name: 'id'},{name: 'name'}]		
+			)
+		});		
+		//创建区Combobox
+		var comboareacity = new Ext.form.ComboBox({
+			fieldLabel: '区',
+			width: 120,
+			store: comboareastore,
+			displayField: 'name',
+			valueField: 'id',
+			triggerAction: 'all',
+			emptyText: '请选择...',
+			allowBlank: false,
+			blankText: '请选择区',
+			editable: false
+		});
 		//创建市数据源
 		var combocitystore = new Ext.data.Store({
 			//设定读取的地址
@@ -233,29 +254,7 @@
 				}
 			}
 		});
-		//创建区数据源
-		var comboareastore = new Ext.data.Store({
-			//设定读取地址
-			proxy: new Ext.data.HttpProxy({url: '../../ComboBoxServlet',method: 'post'}),
-			//读取json返回值根节点为data，对象列为id和name
-			reader: new Ext.data.JsonReader(
-				{root: 'data'}, 
-				[{name: 'id'},{name: 'name'}]		
-			)
-		});		
-		//创建区Combobox
-		var comboareacity = new Ext.form.ComboBox({
-			fieldLabel: '区',
-			width: 120,
-			store: comboareastore,
-			displayField: 'name',
-			valueField: 'id',
-			triggerAction: 'all',
-			emptyText: '请选择...',
-			allowBlank: false,
-			blankText: '请选择区',
-			editable: false
-		});
+		
 		//实现联动
 		//市选择变化时触发事件
 		comboboxcity.on('select', function () {
@@ -264,16 +263,9 @@
 	 		comboareacity.setValue('');//把区的下拉列表设置为空，由于非空验证，Ext会提示用户“请选择区”
 	 		comboareastore.load();//区的数据源重新加载
  		});
-		//创建文本上传域
+		//创建html编辑器
 		var exteditor = new Ext.form.HtmlEditor({
 			fieldLabel: '员工描述'
-		});
-		//整合KE编辑器
-		var keeditor = new Ext.form.TextArea({
-			id: 'keeditor',
-			fieldLabel: '员工描述',
-			width: 700,
-			height: 200
 		});
 		
 		/*Button*/
@@ -281,20 +273,9 @@
 		var submitclick = function(){
 			//校验表单的验证项是否全部通过
 			if (form.getForm().isValid()) {
-				//Ext.Msg.alert('提示','登陆成功！');
-				form.getForm().submit({
-					waitTitle: '请稍后',
-					waitMsg: '正在上传',
-					success: function(form,action){
-						Ext.MessageBox.alert('提示','上传成功');
-						//document.getElementById('imageshow').innerHTML = '<img style="width:150px;height:150px" src="' + action.result.path + '"/>';
-					},
-					failure: function(){
-						Ext.MessageBox.alert('提示','上传失败');
-					}
-				});						
+				Ext.Msg.alert('提示','登陆成功！');						
 			} else {
-				//Ext.MessageBox.alert('提示','你点击了提交按钮');
+				Ext.MessageBox.alert('提示','检验失败');
 			}	
 		}
 		//重置按钮处理方法
@@ -326,7 +307,7 @@
 		/*FormPanel*/
 		//表单
 		var form = new Ext.FormPanel({
-			url: '../../FileOperationServlet',
+			url: '',
 			labelAlign: 'right',
 			labelWidth: 65,
 			frame: true,
@@ -347,18 +328,8 @@
 		        combobox,
 		        comboboxcity, 
 		        comboareacity,
-		        exteditor, 
-		        keeditor
+		        exteditor
 			],
-			 listeners: {
-				 'render': function () {
-					 KE.show({
-					 id: 'keeditor',
-					 	imageUploadJson: ''
-					 });
-					 setTimeout("KE.create('keeditor');", 1000);
-				 }
-			},
 			buttons: [submit,reset]
 		});
 		
@@ -368,8 +339,8 @@
 			title: '用户登录',
 			iconCls: 'loginicon',//给窗体加上小图标
 			plain: true,
-			width: 326,
-			height: 574,
+			width: 626,
+			height: 654,
 			//html: '<div>这里是窗口内容</div>',
 			resizable: true,//是否可以调整窗体的大小
 			modal: true,//是否为模态窗体[什么是模态窗体？当你打开这个窗体以后，如果不能对其他的窗体进行操作，那么这个窗体就是模态窗体，否则为非模态窗体]。
@@ -398,6 +369,7 @@
 		});
 	});
 </script>
+</head>
 <body>
 <div>
 
