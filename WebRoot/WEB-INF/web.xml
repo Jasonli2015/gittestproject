@@ -25,4 +25,14 @@
   	<url-pattern>/FileOperationServlet</url-pattern>
   </servlet-mapping>
   
+  <servlet>
+  	<servlet-name>TreeServlet</servlet-name>
+  	<servlet-class>com.jason.extjs.TreeServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>TreeServlet</servlet-name>
+  	<url-pattern>/TreeServlet</url-pattern>
+  </servlet-mapping>
+  
 </web-app>

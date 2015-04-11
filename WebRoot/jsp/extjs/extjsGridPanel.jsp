@@ -61,7 +61,8 @@
 			text: '查看选中项',
 			listeners: {
 				'click': function(){
-					var row = grid.getSelectionModel().getSelecttions();//获取选中项的行，row[i].get('id')获取行中的某一列
+					//获取选中项的行，row[i].get('id')获取行中的某一列
+					var row = grid.getSelectionModel().getSelecttions();
 					for (var i = 0; i < row.length; i++) {
 						//alert(row[i].get('id'));
 					}
@@ -75,7 +76,7 @@
 			listeners: {
 				"beforechange": function(bbar,params){
 					var grid = bbar.ownerCt;
-					var store = grid.getStore();
+					var store = grid.getStore();//获得数据源
 					var start = params.start;//起始数据的索引号
 					var limit = params.limit;//每页大小
 					console.log("==下面是打印信息")
@@ -110,7 +111,7 @@
 		var borderLayout = new Ext.Panel({
 			layout: 'border',
 			width: 476,
-			height: 374,
+			height: 224,
 			items: [
 				new Ext.Panel({
 					region: 'center',
