@@ -15,20 +15,7 @@ public class ComboBoxServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		req.setCharacterEncoding("UTF-8");  
-		resp.setCharacterEncoding("UTF-8"); 
-		String jsonResult = "{data:[{id:1,name:'广州市'},{id:2,name:'深圳市'}]}";			
-		PrintWriter out = resp.getWriter();
-		out.println(jsonResult);
-		out.flush();
-		out.close();						
-		return;
-	}
-
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		req.setCharacterEncoding("UTF-8");  
+		/*req.setCharacterEncoding("UTF-8");  
 		resp.setCharacterEncoding("UTF-8"); 
 		String id = req.getParameter("id");
 		String jsonResult = "";			
@@ -40,8 +27,26 @@ public class ComboBoxServlet extends HttpServlet {
 		PrintWriter out = resp.getWriter();
 		out.println(jsonResult);
 		out.flush();
-		out.close();						
-		return;
+		out.close();*/
+		req.setCharacterEncoding("UTF-8");  
+		resp.setCharacterEncoding("UTF-8"); 
+		String jsonResult = "[{id:1,name:'类别一'},{id:2,name:'类别二'},{id:3,name:'类别三'}]";	
+		PrintWriter out = resp.getWriter();
+		out.println(jsonResult);
+		out.flush();
+		out.close();
+	}
+
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		req.setCharacterEncoding("UTF-8");  
+		resp.setCharacterEncoding("UTF-8"); 
+		String jsonResult = "[{id:1,name:'类别一'},{id:2,name:'类别二'},{id:2,name:'类别三'}]";	
+		PrintWriter out = resp.getWriter();
+		out.println(jsonResult);
+		out.flush();
+		out.close();
 	}
 
 }

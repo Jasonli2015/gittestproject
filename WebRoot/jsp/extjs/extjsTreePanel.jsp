@@ -6,6 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>extjs tree panel test</title>
 <script type="text/javascript" src="../../js/extjs/adapter/ext/ext-base.js"></script>
+<script type="text/javascript" src="../../js/extjs/ext-basex.js"></script>
 <script type="text/javascript" src="../../js/extjs/ext-all.js"></script>
 <script type="text/javascript" src="../../js/extjs/ext-lang-zh_CN.js"></script>
 <link type="text/css" rel="stylesheet" href="../../js/extjs/resources/css/ext-all.css" />

@@ -26,13 +26,13 @@
   </servlet-mapping>
   
   <servlet>
-  	<servlet-name>TreeServlet</servlet-name>
-  	<servlet-class>com.jason.extjs.TreeServlet</servlet-class>
+  	<servlet-name>DataServlet</servlet-name>
+  	<servlet-class>com.jason.extjs.DataServlet</servlet-class>
   </servlet>
   
   <servlet-mapping>
-  	<servlet-name>TreeServlet</servlet-name>
-  	<url-pattern>/TreeServlet</url-pattern>
+  	<servlet-name>DataServlet</servlet-name>
+  	<url-pattern>/DataServlet</url-pattern>
   </servlet-mapping>
   
 </web-app>

@@ -204,7 +204,7 @@
 		//创建区数据源
 		var comboareastore = new Ext.data.Store({
 			//设定读取地址
-			proxy: new Ext.data.HttpProxy({url: '../../ComboBoxServlet',method: 'post'}),
+			proxy: new Ext.data.HttpProxy({url: '../../ComboBoxServlet',method: 'get'}),
 			//读取json返回值根节点为data，对象列为id和name
 			reader: new Ext.data.JsonReader(
 				{root: 'data'}, 
