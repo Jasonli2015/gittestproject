@@ -84,10 +84,13 @@ public class FileOperationServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-
-		response.setCharacterEncoding("UTF-8");
+		
 		// 文件名中文乱码问题，可调用ServletUpLoader的setHeaderEncoding方法，或者设置request的setCharacterEncoding属性
-		boolean isMultipart = ServletFileUpload.isMultipartContent(request); // 判断上传表单是否为multipart/form-data类型
+		response.setCharacterEncoding("UTF-8");		
+		
+		// 判断上传表单是否为multipart/form-data类型
+		boolean isMultipart = ServletFileUpload.isMultipartContent(request); 
+		
 		if (isMultipart) {
 			// 创建磁盘工厂，利用构造器实现内存数据储存量和临时储存路径
 			DiskFileItemFactory factory = new DiskFileItemFactory();
@@ -98,31 +101,29 @@ public class FileOperationServlet extends HttpServlet {
 			ServletFileUpload upload = new ServletFileUpload(factory);
 			ProgressListener progressListener = new UploadProgressListener(request);
 			request.getSession().setAttribute("progress", progressListener);
-			upload.setProgressListener(progressListener);
-			// 文件名中文乱码问题，可调用ServletUpLoader的setHeaderEncoding方法，或者设置request的setCharacterEncoding属性
+			//监听文件上传进度
+			upload.setProgressListener(progressListener);			
 			upload.setSizeMax(1024 * 1024 * 10000); // 设置允许用户上传文件大小,单位:字节
 			FileOutputStream out = null;
 			InputStream in = null;
 			// 得到所有的表单域，它们目前都被当作FileItem
 			try {
-				// 解析request对象，并把表单中的每一个输入项包装成一个fileItem
-				// 对象，并返回一个保存了所有FileItem的list集合。
-				// upload对象是使用DiskFileItemFactory
-				// 对象创建的ServletFileUpload对象，并设置了临时文件路径 传输文件大小等等。
+				// 解析request对象，并把表单中的每一个输入项包装成一个fileItem对象，并返回一个保存了所有FileItem的list集合。
+				// upload对象是使用DiskFileItemFactory对象创建的ServletFileUpload对象，并设置了临时文件路径 传输文件大小等等。
 				List<FileItem> list = upload.parseRequest(request);
-				Iterator it = list.iterator();
+				Iterator<FileItem> it = list.iterator();
 				while (it.hasNext()) {
 					FileItem item = (FileItem) it.next();// 每一个item就代表一个表单输出项
 					String filename = item.getName();
-					if (item.getName() != null && !item.isFormField()) {
-						// 得到上传文件的名称,并截取
-						String utl = getServletContext().getRealPath("/");
-						String savePath = "C:/file";// 在WebRoot下面建了一个文件夹
-						System.out.println("真实路径："+savePath);
-						String extensionName = filename.substring(filename
-								.lastIndexOf(".") + 1);// 获取文件后缀名
-						out = new FileOutputStream(savePath + "\\"
-								+ UUID.randomUUID() + "." + extensionName);
+					// 得到上传文件的名称,并截取
+					if (item.getName() != null && !item.isFormField()) {						
+						String url = getServletContext().getRealPath("/");
+						System.out.println("当前路径："+url);
+						// 在C盘下面建了一个文件夹	
+						String savePath = "C:/file";	
+						// 获取文件后缀名
+						String extensionName = filename.substring(filename.lastIndexOf(".") + 1);
+						out = new FileOutputStream(savePath + "\\" + UUID.randomUUID() + "." + extensionName);
 						in = item.getInputStream();
 						byte buffer[] = new byte[1024];
 						int len = 0;

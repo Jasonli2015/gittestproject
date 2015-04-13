@@ -12,6 +12,7 @@
 <script type="text/javascript">
 	var _interval;
 	Ext.onReady(function() {
+		
 		var formPanel = new Ext.form.FormPanel({
 			labelWidth : 80,
 			id : 'formPanel',
@@ -20,15 +21,17 @@
 			width : 200,
 			frame : true,
 			fileUpload : true,
-			items : [ new Ext.form.TextField({
-				id : 'excelUpload',
-				anchor : '90%',
-				height : 30,
-				width : 350,
-				name : 'file',
-				inputType : 'file',
-				fieldLabel : '文件选择'
-			}) ]
+			items : [ 
+			    new Ext.form.TextField({
+					id : 'excelUpload',
+					anchor : '90%',
+					height : 30,
+					width : 350,
+					name : 'file',
+					inputType : 'file',
+					fieldLabel : '文件选择'
+				}) 
+			]
 		});
 
 		var upLoadFile = new Ext.Toolbar.Button({
@@ -53,6 +56,7 @@
 			buttons : [ upLoadFile ]
 		}).show();
 	});
+	
 	function uploadFiles(t) {
 		var excelName = Ext.getCmp('excelUpload').getRawValue();// 上传文件名称的路径  
 		if (excelName == "") {
