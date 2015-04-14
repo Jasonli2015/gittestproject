@@ -10,7 +10,7 @@
 <script type="text/javascript" src="../../js/extjs/ext-lang-zh_CN.js"></script>
 <link type="text/css" rel="stylesheet" href="../../js/extjs/resources/css/ext-all.css" />
 <script type="text/javascript">
-	//var _interval;
+
 	Ext.onReady(function() {
 		
 		var formPanel = new Ext.form.FormPanel({
@@ -21,7 +21,6 @@
 			width : 200,
 			frame : true,
 			fileUpload : true,
-
 			items : [ 
 			    new Ext.form.TextField(
 			    	{
@@ -79,7 +78,7 @@
 					fileName = fileName + "/" + array[index];
 				}
 			}
-			//_interval = setInterval("showRequest()", 100);
+			
 			Ext.getCmp("formPanel").getForm().submit({
 				url : '../../FileOperationServlet',
 				method : 'POST',
@@ -95,23 +94,6 @@
 			});
 		}
 	}
-	/* function showRequest() {
-		Ext.Ajax.request({
-			url : 'loginAction/getUploadPrcent.action',
-			method : 'post',
-			success : function(data, options) {
-				Ext.getCmp("uploadWin").setTitle(
-						"上传文件:已经写入(" + data.responseText + ")");
-				if (data.responseText == '100%') {
-					clearInterval(_interval);
-					Ext.getCmp("uploadWin").setTitle("上传文件:写入完成,请稍等...");
-					return;
-				}
-				m++;
-			}
-		});
-
-	} */
 </script>
 <title>extjs upload test</title>
 </head>

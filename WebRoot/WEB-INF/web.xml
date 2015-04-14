@@ -35,4 +35,14 @@
   	<url-pattern>/DataServlet</url-pattern>
   </servlet-mapping>
   
+  <servlet>
+  	<servlet-name>DeptAndEmpProcessorServlet</servlet-name>
+  	<servlet-class>com.jason.extjs.DeptAndEmpProcessorServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>DeptAndEmpProcessorServlet</servlet-name>
+  	<url-pattern>/DeptAndEmpProcessorServlet</url-pattern>
+  </servlet-mapping>
+  
 </web-app>
