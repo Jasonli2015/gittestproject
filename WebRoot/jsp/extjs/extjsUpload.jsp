@@ -10,7 +10,7 @@
 <script type="text/javascript" src="../../js/extjs/ext-lang-zh_CN.js"></script>
 <link type="text/css" rel="stylesheet" href="../../js/extjs/resources/css/ext-all.css" />
 <script type="text/javascript">
-	var _interval;
+	//var _interval;
 	Ext.onReady(function() {
 		var formPanel = new Ext.form.FormPanel({
 			labelWidth : 80,
@@ -21,7 +21,7 @@
 			frame : true,
 			fileUpload : true,
 			items : [ new Ext.form.TextField({
-				id : 'excelUpload',
+				id : 'fileUpload',
 				anchor : '90%',
 				height : 30,
 				width : 350,
@@ -53,14 +53,16 @@
 			buttons : [ upLoadFile ]
 		}).show();
 	});
+	
 	function uploadFiles(t) {
-		var excelName = Ext.getCmp('excelUpload').getRawValue();// 上传文件名称的路径  
-		if (excelName == "") {
+		// 上传文件名称的路径 
+		var name = Ext.getCmp('fileUpload').getRawValue(); 
+		if (name == "") {
 			Ext.Msg.alert("提示", "请选择需要上传的文件！");
 			return;
 		} else {
 			var array = new Array();
-			array = excelName.split("\\");
+			array = name.split("\\");
 			var length = array.length;
 			var fileName = "";
 			var index = 0;
@@ -71,7 +73,7 @@
 					fileName = fileName + "/" + array[index];
 				}
 			}
-			_interval = setInterval("showRequest()", 100);
+			//_interval = setInterval("showRequest()", 100);
 			Ext.getCmp("formPanel").getForm().submit({
 				url : '../../FileOperationServlet',
 				method : 'POST',
@@ -108,6 +110,6 @@
 <title>extjs upload test</title>
 </head>
 <body>
-	<div id="form"></div>
+	<!-- <div id="form"></div> -->
 </body>
 </html>
