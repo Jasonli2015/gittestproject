@@ -20,9 +20,6 @@ import org.apache.commons.fileupload.ProgressListener;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
-import com.jspsmart.upload.SmartUpload;
-import com.jspsmart.upload.SmartUploadException;
-
 public class FileOperationServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
@@ -34,46 +31,7 @@ public class FileOperationServlet extends HttpServlet {
 		req.setCharacterEncoding("utf-8");
 		resp.setContentType("text.html;charset=utf-8");
 
-		SmartUpload su = new SmartUpload();
-
-		// 获得上传文件路径
-		String url = "";
 		String msg = "";
-		try {
-			// 初始化
-			su.initialize(this.getServletConfig(), req, resp);
-			// 设置每个文件最大长度
-			su.setMaxFileSize(1024 * 1024 * 1024);
-			// 设置所有上传文件总长度
-			su.setTotalMaxFileSize(1024 * 1024 * 1024 * 2);
-			// 设定允许上传的文件类型
-			su.setAllowedFilesList("jpeg,jpg,png,JPEG,JPG,PNG");
-
-			su.upload();
-
-			StringBuffer filename = new StringBuffer();
-
-			// 生成时间戳
-			long time = System.currentTimeMillis();
-			String second = String.valueOf(time);
-
-			// 通过file input的name属性获得文件名
-			String uploadPath = su.getRequest().getParameter("imgFile");
-
-			filename.append(second).append("&").append(uploadPath);
-
-			// 获得文件保存的指定目录
-			url = getServletContext().getRealPath("/") + "file"
-					+ java.io.File.separator + filename;
-			// 保存文件到指定目录
-			su.getFiles().getFile(0).saveAs(url);
-
-			msg = "{success:true,path:'" + url + "'}";
-
-		} catch (SmartUploadException e) {
-			msg = "{success:false,path:''}";
-			e.printStackTrace();
-		}
 
 		PrintWriter pw = resp.getWriter();
 		pw.println(msg);
@@ -102,8 +60,9 @@ public class FileOperationServlet extends HttpServlet {
 			ProgressListener progressListener = new UploadProgressListener(request);
 			request.getSession().setAttribute("progress", progressListener);
 			//监听文件上传进度
-			upload.setProgressListener(progressListener);			
-			upload.setSizeMax(1024 * 1024 * 10000); // 设置允许用户上传文件大小,单位:字节
+			upload.setProgressListener(progressListener);	
+			// 设置允许用户上传文件大小,单位:字节
+			upload.setSizeMax(1024 * 1024 * 10000); 
 			FileOutputStream out = null;
 			InputStream in = null;
 			// 得到所有的表单域，它们目前都被当作FileItem
@@ -113,7 +72,8 @@ public class FileOperationServlet extends HttpServlet {
 				List<FileItem> list = upload.parseRequest(request);
 				Iterator<FileItem> it = list.iterator();
 				while (it.hasNext()) {
-					FileItem item = (FileItem) it.next();// 每一个item就代表一个表单输出项
+					// 每一个item就代表一个表单输出项
+					FileItem item = (FileItem) it.next();
 					String filename = item.getName();
 					// 得到上传文件的名称,并截取
 					if (item.getName() != null && !item.isFormField()) {						
